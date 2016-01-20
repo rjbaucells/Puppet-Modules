@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~  Copyright (c) 2005-2010, WSO2 Inc. (http://wso2.com) All Rights Reserved.
+  ~
+  ~  WSO2 Inc. licenses this file to you under the Apache License,
+  ~  Version 2.0 (the "License"); you may not use this file except
+  ~  in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing,
+  ~  software distributed under the License is distributed on an
+  ~  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~  KIND, either express or implied.  See the License for the
+  ~  specific language governing permissions and limitations
+  ~  under the License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.wso2.puppet</groupId>
+    <artifactId>wso2-puppet-modules</artifactId>
+    <packaging>pom</packaging>
+    <version>${puppet.module.version}</version>
+    <name>WSO2 Puppet Modules</name>
+    <description>WSO2 Puppet Modules</description>
+
+    <licenses>
+        <license>
+            <name>Apache License Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+        </license>
+    </licenses>
+
+    <modules>
+        <module>modules</module>
+        <module>modules/wso2base</module>
+        <module>modules/wso2brs</module>
+        <module>modules/wso2bps</module>
+        <module>modules/wso2am</module>
+        <module>modules/wso2as</module>
+        <module>modules/wso2cep</module>
+        <module>modules/wso2das</module>
+        <module>modules/wso2dss</module>
+        <module>modules/wso2esb</module>
+        <module>modules/wso2es</module>
+        <module>modules/wso2greg</module>
+        <module>modules/wso2is</module>
+        <module>modules/wso2mb</module>
+        <module>modules/wso2ppaas</module>
+    </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <inherited>true</inherited>
+                <version>2.5.3</version>
+                <configuration>
+                    <descriptor>package.xml</descriptor>
+                    <appendAssemblyId>false</appendAssemblyId>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>create-archive</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+	        <groupId>org.codehaus.mojo</groupId>
+	        <artifactId>exec-maven-plugin</artifactId>
+	        <version>1.2</version>
+	        <executions>
+	            <execution>
+	                <id>compile</id>
+	                <configuration>
+                        <executable>ruby</executable>
+	                 <workingDirectory>${validation.script.dir}</workingDirectory>
+	                    <arguments>
+	                        <argument>validate-yaml.rb</argument>
+	                    </arguments>
+	                </configuration>                    
+	                <phase>compile</phase>
+	                <goals>
+	                    <goal>exec</goal>
+	                </goals>
+        	    </execution>
+	        </executions>
+	    </plugin> 
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>central</id>
+            <name>Maven Central Repository</name>
+            <layout>default</layout>
+            <url>http://repo1.maven.org/maven2</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+        <repository>
+            <id>wso2-nexus</id>
+            <name>WSO2 Internal Repository</name>
+            <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+    </repositories>
+
+
+    <properties>
+        <puppet.module.version>1.0.0-SNAPSHOT</puppet.module.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <validation.script.dir>${project.basedir}</validation.script.dir>
+    </properties>
+</project>
